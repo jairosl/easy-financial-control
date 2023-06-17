@@ -17,7 +17,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="pt-br">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <div className="h-screen flex items-center justify-center">
+            {children}
+          </div>
+        </body>
       </html>
     </ClerkProvider>
   );
