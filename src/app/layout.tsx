@@ -2,7 +2,7 @@ import './globals.css'
 import { Roboto } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 
-const roboto = Roboto({ weight: ["400", "500", "700"] });
+const roboto = Roboto({ weight: ["400", "500", "700"], subsets: ["latin"] });
 
 export const metadata = {
   title: "Create Next App",
@@ -18,7 +18,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="pt-br">
         <body className={roboto.className}>
-          <div className="h-screen flex items-center justify-center">
+          <div className="h-screen w-screen flex items-center justify-center">
             {children}
           </div>
         </body>

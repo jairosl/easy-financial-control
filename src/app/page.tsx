@@ -1,8 +1,13 @@
-import { Transaction } from "@/domain/transactions";
 import { UserButton } from "@clerk/nextjs";
 
+import { Card } from "@/components/card";
+import { Transaction } from "@/domain/transactions";
+import { Header } from "@/components/header";
+
 async function getTransactions(): Promise<Transaction[]> {
-  const res = await fetch("http://localhost:3000/transactions");
+  const res = await fetch("http://localhost:3000/transactions", {
+    cache: "no-store",
+  });
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
@@ -16,8 +21,23 @@ export default async function Home() {
   const transactions = await getTransactions();
 
   return (
-    <div>
-      <UserButton afterSignOutUrl="/" />
+    <div className="w-full h-full">
+      {/* <UserButton afterSignOutUrl="/" /> */}
+      <Header />
+      <div className="max-w-3xl flex flex-col mx-auto">
+        {transactions.map((transactions, index) => {
+          return (
+            <Card
+              category={transactions.category}
+              created_at={transactions.created_at}
+              description={transactions.description}
+              price={transactions.price}
+              type={transactions.type}
+              key={index}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
