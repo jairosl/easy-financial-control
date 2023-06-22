@@ -1,42 +1,52 @@
 import { UserButton } from "@clerk/nextjs";
 
-import { Card } from "@/components/card";
-import { Transaction } from "@/domain/transactions";
 import { Header } from "@/components/header";
-
-async function getTransactions(): Promise<Transaction[]> {
-  const res = await fetch("http://localhost:3000/transactions", {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-}
+import { Summary } from "@/components/summary";
+import { getTransactions } from "@/services/http/transactions";
+import { CardList } from "@/components/cards";
+import { TypeTransaction } from "@/domain";
 
 export default async function Home() {
   const transactions = await getTransactions();
 
+  const comeIn = transactions.reduce((acc, transaction) => {
+    if (transaction.type === TypeTransaction.enter) {
+      return (acc += transaction.price);
+    }
+
+    return acc;
+  }, 0);
+
+  const comeOut = transactions.reduce((acc, transaction) => {
+    if (transaction.type === TypeTransaction.leave) {
+      return (acc += transaction.price);
+    }
+
+    return acc;
+  }, 0);
+
   return (
-    <div className="w-full h-full">
+    <div className="min-w-screen min-h-screen  bg-green">
       {/* <UserButton afterSignOutUrl="/" /> */}
       <Header />
-      <div className="max-w-3xl flex flex-col mx-auto">
-        {transactions.map((transactions, index) => {
-          return (
-            <Card
-              category={transactions.category}
-              created_at={transactions.created_at}
-              description={transactions.description}
-              price={transactions.price}
-              type={transactions.type}
-              key={index}
-            />
-          );
-        })}
+      <div className="mt-[-4rem] px-20">
+        <Summary comeIn={comeIn} comeOut={comeOut} />
+      </div>
+      <div className="h-full w-screen">
+        <div className="w-full flex flex-col mx-auto pt-32 px-20 gap-2">
+          {transactions.map((transactions, index) => {
+            return (
+              <CardList
+                category={transactions.category}
+                created_at={transactions.created_at}
+                description={transactions.description}
+                price={transactions.price}
+                type={transactions.type}
+                key={index}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

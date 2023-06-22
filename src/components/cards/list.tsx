@@ -1,6 +1,6 @@
 import { Transaction } from "@/domain";
 
-export function Card(transaction: Transaction) {
+export function CardList(transaction: Transaction) {
   return (
     <div className="w-full flex items-center px-8 py-6 bg-white rounded-md">
       <div className="flex-1 pr-2">
