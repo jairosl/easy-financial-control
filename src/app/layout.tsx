@@ -18,7 +18,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="pt-br">
         <body className={roboto.className}>
-          <div className="h-screen w-screen flex items-center justify-center">
+          <div className="min-h-screen w-screen  flex items-center justify-center">
             {children}
           </div>
         </body>

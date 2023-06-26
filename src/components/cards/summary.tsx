@@ -1,4 +1,5 @@
 "use client";
+import { formatterCurrency } from "@/services/formatters";
 import {
   ArrowCircleDown,
   ArrowCircleUp,
@@ -24,7 +25,9 @@ export function CardSummary({ label, value, type }: CardSummaryProps) {
         <span className="block text-[1rem] leading-[160%]">{label}</span>
         {IconByType[type]}
       </div>
-      <p className="text-black text-[2rem] leading-[140%]">{value}</p>
+      <p className="text-black text-[2rem] leading-[140%]">
+        {formatterCurrency.format(value)}
+      </p>
     </div>
   );
 }

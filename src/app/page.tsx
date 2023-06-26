@@ -1,10 +1,10 @@
-import { UserButton } from "@clerk/nextjs";
-
 import { Header } from "@/components/header";
 import { Summary } from "@/components/summary";
 import { getTransactions } from "@/services/http/transactions";
 import { CardList } from "@/components/cards";
 import { TypeTransaction } from "@/domain";
+
+export const revalidate = 10;
 
 export default async function Home() {
   const transactions = await getTransactions();
@@ -26,26 +26,27 @@ export default async function Home() {
   }, 0);
 
   return (
-    <div className="min-w-screen min-h-screen  bg-green">
-      {/* <UserButton afterSignOutUrl="/" /> */}
+    <div className="w-screen h-full bg-green pb-2 overflow-x-hidden">
       <Header />
       <div className="mt-[-4rem] px-20">
         <Summary comeIn={comeIn} comeOut={comeOut} />
       </div>
-      <div className="h-full w-screen">
-        <div className="w-full flex flex-col mx-auto pt-32 px-20 gap-2">
-          {transactions.map((transactions, index) => {
-            return (
-              <CardList
-                category={transactions.category}
-                created_at={transactions.created_at}
-                description={transactions.description}
-                price={transactions.price}
-                type={transactions.type}
-                key={index}
-              />
-            );
-          })}
+      <div className="">
+        <div className="pt-32 px-20">
+          <div className="flex flex-col gap-2">
+            {transactions.map((transactions, index) => {
+              return (
+                <CardList
+                  category={transactions.category}
+                  created_at={transactions.created_at}
+                  description={transactions.description}
+                  price={transactions.price}
+                  type={transactions.type}
+                  key={index}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
