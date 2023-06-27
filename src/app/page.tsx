@@ -3,6 +3,7 @@ import { Summary } from "@/components/summary";
 import { getTransactions } from "@/services/http/transactions";
 import { CardList } from "@/components/cards";
 import { TypeTransaction } from "@/domain";
+import { TableHeader } from "@/components/header/table";
 
 export const revalidate = 10;
 
@@ -26,27 +27,26 @@ export default async function Home() {
   }, 0);
 
   return (
-    <div className="w-screen h-full bg-green pb-2 overflow-x-hidden">
+    <div className="w-screen h-full bg-green pb-4 min-h-screen">
       <Header />
       <div className="mt-[-4rem] px-20">
         <Summary comeIn={comeIn} comeOut={comeOut} />
       </div>
-      <div className="">
-        <div className="pt-32 px-20">
-          <div className="flex flex-col gap-2">
-            {transactions.map((transactions, index) => {
-              return (
-                <CardList
-                  category={transactions.category}
-                  created_at={transactions.created_at}
-                  description={transactions.description}
-                  price={transactions.price}
-                  type={transactions.type}
-                  key={index}
-                />
-              );
-            })}
-          </div>
+      <div className="pt-32 px-20">
+        <div className="flex flex-col gap-2">
+          <TableHeader />
+          {transactions.map((transactions, index) => {
+            return (
+              <CardList
+                category={transactions.category}
+                created_at={transactions.created_at}
+                description={transactions.description}
+                price={transactions.price}
+                type={transactions.type}
+                key={index}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

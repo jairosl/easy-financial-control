@@ -1,7 +1,9 @@
 import { Transaction } from "@/domain";
 
 export async function getTransactions(): Promise<Transaction[]> {
-  const res = await fetch("http://localhost:3000/transactions");
+  const res = await fetch("http://localhost:3000/transactions", {
+    cache: "no-cache",
+  });
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary

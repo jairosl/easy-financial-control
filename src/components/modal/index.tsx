@@ -1,12 +1,13 @@
 "use client";
-import { TypeTransaction } from "@/domain";
+import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Dialog } from "@headlessui/react";
 import { ArrowCircleDown, ArrowCircleUp } from "@phosphor-icons/react";
-import { ChangeEvent, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateTransactionSchema, ICreateTransaction } from "./validation";
+import { TypeTransaction } from "@/domain";
 import { createTransaction } from "@/services/http/transactions";
+import { CreateTransactionSchema, ICreateTransaction } from "./validation";
 
 interface ModalProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ interface ModalProps {
 
 export function Modal({ handleClose, isOpen }: ModalProps) {
   const [selectedType, setSelectedType] = useState(TypeTransaction.enter);
+  const router = useRouter();
 
   const isEnter = selectedType === TypeTransaction.enter;
 
@@ -30,9 +32,12 @@ export function Modal({ handleClose, isOpen }: ModalProps) {
 
   const onSubmit: SubmitHandler<ICreateTransaction> = async (data) => {
     try {
+      console.log(data);
       await createTransaction(data);
       reset();
+      setSelectedType(TypeTransaction.enter);
       handleClose();
+      router.refresh();
     } catch (error) {}
   };
 
